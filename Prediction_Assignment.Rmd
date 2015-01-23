@@ -1,0 +1,127 @@
+---
+title: "Prediction_Assignment_Writeup"
+author: "Richard Green"
+date: "Sunday, January 25, 2015"
+output: html_document
+---
+Prediction_Assignment_Writeup
+-----------------------------
+
+Executive summary 
+-----------------
+Outlined below I used personal activity data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. These participants were asked to perform barbell lifts correctly and incorrectly in 5 different ways. I took this data and constructed a machine learning algorithm that allowed me to predict accurately the manner in which they exercised. Ultimately the random forest approach proved to be the best being able accurately predict all 20 entries in my test data set.
+
+More information on this study can be found here: http://groupware.les.inf.puc-rio.br/har
+Load libraries and results Function
+-----------------------------------
+Session info
+```{r}
+sessionInfo()
+library(caret)
+library(randomForest)
+library(RCurl)
+library(e1071)
+library(rattle)
+
+pml_write_files = function(x){
+  n = length(x)
+  for(i in 1:n){
+    filename = paste0("problem_id_",i,".txt")
+    write.table(x[i],file=filename,quote=FALSE,row.names=FALSE,col.names=FALSE)
+  }
+}
+
+```
+Setting a seed and loading in our data
+```{r}
+
+set.seed(1234)
+
+PML_training <- read.csv(file="C:\\coursera\\ML\\pml-training.csv", header=T)
+
+PML_testing <- read.csv(file="C:\\coursera\\ML\\pml-testing.csv", header=T)
+```
+
+Data Preprocessing and Cleaning
+```{r}
+
+#Now lets take a look at the data
+
+str(PML_training)
+
+# we see there are many NAs and "#DIV/0!" valeus generating a lot noise . Lets clean this up to create a tidy data set. Whatever we do to training we should also perform on testing
+
+PML_training[PML_training==""] <- NA
+
+PML_training[PML_training=='"#DIV/0!"'] <- NA
+
+PML_training <- PML_training[,colSums(is.na(PML_training)) < .5 * nrow(PML_training)]
+
+
+# lets remove columns we do not need
+
+PML_train_clean <- PML_training[,c(-1:-7)]
+
+dim(PML_train_clean)
+
+```
+Building a Model with Cross Validation
+-------------------------------------
+Now lets build a machine learning algorithm to predict activity quality from activity monitors
+Lets try two models: Trees and Random Forests. We will apply a cross validation when building our model.
+
+Regression Trees
+----------------
+```{r}
+#### predict with trees
+
+modFit <- train(classe ~ .,method="rpart",data=PML_train_clean,  trControl = trainControl(method = "cv"))
+
+
+print(modFit$finalModel)
+
+print(modFit, digits =3)
+
+confusionMatrix(PML_train_clean$classe, predict(modFit, PML_train_clean))
+
+#Accuracy of 49.56 % is not so good. 
+
+plot(modFit$finalModel, uniform=TRUE, main="Classification Tree")
+
+text(modFit$finalModel, use.n=TRUE, all=TRUE, cex=.8)
+```
+Random Forests
+--------------
+```{r}
+# Since 49% was not so great lets try to predict with random forests now and add cross validation with trcontrol and cv as the method
+
+model <- train(classe ~ .,method="rf",data=PML_train_clean,  trControl = trainControl(method = "cv"))
+
+print(model$finalModel)
+
+print(model, digits =3)
+
+confusionMatrix(PML_train_clean$classe, predict(model, PML_train_clean))
+
+```
+Results
+-------------------
+Now that we concluded Random Forest is the right choice lets take our newly contrusted Machine Algorithm
+to predict activity quality from activity monitors with the test data. We can see from the confusion matrix above that our in sample accuracy with the training data is (0.995). We used 10 fold cross validation to predict the out of sample error.The final value used for the model was mtry of 2. 
+
+```{r}
+#now lets generate our results off our model and the test data set.
+answers <- predict(model,newdata=PML_testing)
+
+
+#lets take a look at our results
+summary(answers)
+
+##Now lets write out our answers into individual files for the submission
+
+```{r}
+#go to my answers directory
+setwd('C:\\coursera\\ML\\answers')
+
+pml_write_files(answers)
+####
