@@ -106,6 +106,137 @@ library(rattle)
 ```
 
 ```r
+library(WGCNA)
+```
+
+```
+## Warning: package 'WGCNA' was built under R version 3.1.2
+```
+
+```
+## Loading required package: dynamicTreeCut
+```
+
+```
+## Warning: package 'dynamicTreeCut' was built under R version 3.1.2
+```
+
+```
+## Loading required package: fastcluster
+```
+
+```
+## Warning: package 'fastcluster' was built under R version 3.1.2
+```
+
+```
+## 
+## Attaching package: 'fastcluster'
+## 
+## The following object is masked from 'package:stats':
+## 
+##     hclust
+```
+
+```
+## Warning: package 'RSQLite' was built under R version 3.1.2
+```
+
+```
+## Loading required package: DBI
+```
+
+```
+## Warning: package 'DBI' was built under R version 3.1.2
+```
+
+```
+## Loading required package: AnnotationDbi
+```
+
+```
+## Warning: package 'AnnotationDbi' was built under R version 3.1.1
+```
+
+```
+## Loading required package: BiocGenerics
+## Loading required package: parallel
+## 
+## Attaching package: 'BiocGenerics'
+## 
+## The following objects are masked from 'package:parallel':
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB
+## 
+## The following object is masked from 'package:randomForest':
+## 
+##     combine
+## 
+## The following object is masked from 'package:stats':
+## 
+##     xtabs
+## 
+## The following objects are masked from 'package:base':
+## 
+##     anyDuplicated, append, as.data.frame, as.vector, cbind,
+##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
+##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
+##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
+##     table, tapply, union, unique, unlist
+## 
+## Loading required package: Biobase
+## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     'browseVignettes()'. To cite Bioconductor, see
+##     'citation("Biobase")', and for packages 'citation("pkgname")'.
+## 
+## Loading required package: GenomeInfoDb
+```
+
+```
+## ==========================================================================
+## *
+## *  Package WGCNA 1.43 loaded.
+## *
+## *    Important note: It appears that your system supports multi-threading,
+## *    but it is not enabled within WGCNA in R. 
+## *    To allow multi-threading within WGCNA with all available cores, use 
+## *
+## *          allowWGCNAThreads()
+## *
+## *    within R. Use disableWGCNAThreads() to disable threading if necessary.
+## *    Alternatively, set the following environment variable on your system:
+## *
+## *          ALLOW_WGCNA_THREADS=<number_of_processors>
+## *
+## *    for example 
+## *
+## *          ALLOW_WGCNA_THREADS=4
+## *
+## *    To set the environment variable in linux bash shell, type 
+## *
+## *           export ALLOW_WGCNA_THREADS=4
+## *
+## *     before running R. Other operating systems or shells will
+## *     have a similar command to achieve the same aim.
+## *
+## ==========================================================================
+```
+
+```
+## 
+## Attaching package: 'WGCNA'
+## 
+## The following object is masked from 'package:stats':
+## 
+##     cor
+```
+
+```r
 pml_write_files = function(x){
   n = length(x)
   for(i in 1:n){
@@ -323,45 +454,7 @@ print(modFit, digits =3)
 ```
 
 ```r
-confusionMatrix(PML_train_clean$classe, predict(modFit, PML_train_clean))
-```
-
-```
-## Confusion Matrix and Statistics
-## 
-##           Reference
-## Prediction    A    B    C    D    E
-##          A 5080   81  405    0   14
-##          B 1581 1286  930    0    0
-##          C 1587  108 1727    0    0
-##          D 1449  568 1199    0    0
-##          E  524  486  966    0 1631
-## 
-## Overall Statistics
-##                                           
-##                Accuracy : 0.4956          
-##                  95% CI : (0.4885, 0.5026)
-##     No Information Rate : 0.5209          
-##     P-Value [Acc > NIR] : 1               
-##                                           
-##                   Kappa : 0.3407          
-##  Mcnemar's Test P-Value : NA              
-## 
-## Statistics by Class:
-## 
-##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity            0.4970  0.50850  0.33040       NA  0.99149
-## Specificity            0.9468  0.85310  0.88225   0.8361  0.89008
-## Pos Pred Value         0.9104  0.33869  0.50468       NA  0.45218
-## Neg Pred Value         0.6339  0.92145  0.78395       NA  0.99913
-## Prevalence             0.5209  0.12889  0.26638   0.0000  0.08383
-## Detection Rate         0.2589  0.06554  0.08801   0.0000  0.08312
-## Detection Prevalence   0.2844  0.19351  0.17440   0.1639  0.18382
-## Balanced Accuracy      0.7219  0.68080  0.60633       NA  0.94079
-```
-
-```r
-#Accuracy of 49.56 % is not so good. 
+#Accuracy of 50 % is not so good. We should be able to do better
 
 plot(modFit$finalModel, uniform=TRUE, main="Classification Tree")
 
@@ -373,7 +466,7 @@ Random Forests
 --------------
 
 ```r
-# Since 49% was not so great lets try to predict with random forests now and add cross validation with trcontrol and cv as the method
+# Since 50% was not so great lets try to predict with random forests now (and also add cross validation with trcontrol and cv as the method)
 
 model <- train(classe ~ .,method="rf",data=PML_train_clean,  trControl = trainControl(method = "cv"))
 
@@ -424,54 +517,29 @@ print(model, digits =3)
 ## Accuracy was used to select the optimal model using  the largest value.
 ## The final value used for the model was mtry = 27.
 ```
+Random Forest continued (looking at variable importance and accuracy )
+-----------------------------------------------------------------------
+Lets run randomForests again , but this time we will look at the importance of the variables, and how well the out of bag (aka out of sample error) was calculated. This should show us as the numbers are randomly permuted in the out of sample error estimation the overall mean decrease in the tree's accuracy is displayed (which shown in the figure below).    
+
 
 ```r
-confusionMatrix(PML_train_clean$classe, predict(model, PML_train_clean))
+model.rf <- randomForest(classe ~ ., data=PML_train_clean, importance=TRUE,proximity=TRUE)
+
+varImp <- importance(model.rf)
+
+varImpPlot(model.rf, type=1)
 ```
 
-```
-## Confusion Matrix and Statistics
-## 
-##           Reference
-## Prediction    A    B    C    D    E
-##          A 5580    0    0    0    0
-##          B    0 3797    0    0    0
-##          C    0    0 3422    0    0
-##          D    0    0    0 3216    0
-##          E    0    0    0    0 3607
-## 
-## Overall Statistics
-##                                      
-##                Accuracy : 1          
-##                  95% CI : (0.9998, 1)
-##     No Information Rate : 0.2844     
-##     P-Value [Acc > NIR] : < 2.2e-16  
-##                                      
-##                   Kappa : 1          
-##  Mcnemar's Test P-Value : NA         
-## 
-## Statistics by Class:
-## 
-##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity            1.0000   1.0000   1.0000   1.0000   1.0000
-## Specificity            1.0000   1.0000   1.0000   1.0000   1.0000
-## Pos Pred Value         1.0000   1.0000   1.0000   1.0000   1.0000
-## Neg Pred Value         1.0000   1.0000   1.0000   1.0000   1.0000
-## Prevalence             0.2844   0.1935   0.1744   0.1639   0.1838
-## Detection Rate         0.2844   0.1935   0.1744   0.1639   0.1838
-## Detection Prevalence   0.2844   0.1935   0.1744   0.1639   0.1838
-## Balanced Accuracy      1.0000   1.0000   1.0000   1.0000   1.0000
-```
-Results
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
+Results (cross validation, generalization/out of sample error)
 -------------------
-Now that we concluded Random Forest is the right choice lets take our newly contrusted Machine Algorithm
-to predict activity quality from activity monitors with the test data. We can see from the confusion matrix above that our in sample accuracy with the training data is (0.995). We used 10 fold cross validation to predict the out of sample error.The final value used for the model was mtry of 2. 
+We concluded Random Forest is the right choice to constructed our Machine Learning Algorithm
+to predict activity quality from the activity monitors with the test data. The accuracy in the regression trees was only 50% and jump up the 99.5% with Random Forests. Both models were built with a 10 fold cross validation. We expect our out of sample error (aka generalization error) to be .43% with Random Forests.
 
 
 ```r
 #now lets generate our results off our model and the test data set.
 answers <- predict(model,newdata=PML_testing)
-
 
 #lets take a look at our results
 summary(answers)

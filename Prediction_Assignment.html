@@ -263,6 +263,122 @@ hljs.initHighlightingOnLoad();
 ## Type &#39;rattle()&#39; to shake, rattle, and roll your data.
 </code></pre>
 
+<pre><code class="r">library(WGCNA)
+</code></pre>
+
+<pre><code>## Warning: package &#39;WGCNA&#39; was built under R version 3.1.2
+</code></pre>
+
+<pre><code>## Loading required package: dynamicTreeCut
+</code></pre>
+
+<pre><code>## Warning: package &#39;dynamicTreeCut&#39; was built under R version 3.1.2
+</code></pre>
+
+<pre><code>## Loading required package: fastcluster
+</code></pre>
+
+<pre><code>## Warning: package &#39;fastcluster&#39; was built under R version 3.1.2
+</code></pre>
+
+<pre><code>## 
+## Attaching package: &#39;fastcluster&#39;
+## 
+## The following object is masked from &#39;package:stats&#39;:
+## 
+##     hclust
+</code></pre>
+
+<pre><code>## Warning: package &#39;RSQLite&#39; was built under R version 3.1.2
+</code></pre>
+
+<pre><code>## Loading required package: DBI
+</code></pre>
+
+<pre><code>## Warning: package &#39;DBI&#39; was built under R version 3.1.2
+</code></pre>
+
+<pre><code>## Loading required package: AnnotationDbi
+</code></pre>
+
+<pre><code>## Warning: package &#39;AnnotationDbi&#39; was built under R version 3.1.1
+</code></pre>
+
+<pre><code>## Loading required package: BiocGenerics
+## Loading required package: parallel
+## 
+## Attaching package: &#39;BiocGenerics&#39;
+## 
+## The following objects are masked from &#39;package:parallel&#39;:
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB
+## 
+## The following object is masked from &#39;package:randomForest&#39;:
+## 
+##     combine
+## 
+## The following object is masked from &#39;package:stats&#39;:
+## 
+##     xtabs
+## 
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     anyDuplicated, append, as.data.frame, as.vector, cbind,
+##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
+##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
+##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
+##     table, tapply, union, unique, unlist
+## 
+## Loading required package: Biobase
+## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     &#39;browseVignettes()&#39;. To cite Bioconductor, see
+##     &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.
+## 
+## Loading required package: GenomeInfoDb
+</code></pre>
+
+<pre><code>## ==========================================================================
+## *
+## *  Package WGCNA 1.43 loaded.
+## *
+## *    Important note: It appears that your system supports multi-threading,
+## *    but it is not enabled within WGCNA in R. 
+## *    To allow multi-threading within WGCNA with all available cores, use 
+## *
+## *          allowWGCNAThreads()
+## *
+## *    within R. Use disableWGCNAThreads() to disable threading if necessary.
+## *    Alternatively, set the following environment variable on your system:
+## *
+## *          ALLOW_WGCNA_THREADS=&lt;number_of_processors&gt;
+## *
+## *    for example 
+## *
+## *          ALLOW_WGCNA_THREADS=4
+## *
+## *    To set the environment variable in linux bash shell, type 
+## *
+## *           export ALLOW_WGCNA_THREADS=4
+## *
+## *     before running R. Other operating systems or shells will
+## *     have a similar command to achieve the same aim.
+## *
+## ==========================================================================
+</code></pre>
+
+<pre><code>## 
+## Attaching package: &#39;WGCNA&#39;
+## 
+## The following object is masked from &#39;package:stats&#39;:
+## 
+##     cor
+</code></pre>
+
 <pre><code class="r">pml_write_files = function(x){
   n = length(x)
   for(i in 1:n){
@@ -469,43 +585,7 @@ modFit &lt;- train(classe ~ .,method=&quot;rpart&quot;,data=PML_train_clean,  tr
 ## The final value used for the model was cp = 0.0357.
 </code></pre>
 
-<pre><code class="r">confusionMatrix(PML_train_clean$classe, predict(modFit, PML_train_clean))
-</code></pre>
-
-<pre><code>## Confusion Matrix and Statistics
-## 
-##           Reference
-## Prediction    A    B    C    D    E
-##          A 5080   81  405    0   14
-##          B 1581 1286  930    0    0
-##          C 1587  108 1727    0    0
-##          D 1449  568 1199    0    0
-##          E  524  486  966    0 1631
-## 
-## Overall Statistics
-##                                           
-##                Accuracy : 0.4956          
-##                  95% CI : (0.4885, 0.5026)
-##     No Information Rate : 0.5209          
-##     P-Value [Acc &gt; NIR] : 1               
-##                                           
-##                   Kappa : 0.3407          
-##  Mcnemar&#39;s Test P-Value : NA              
-## 
-## Statistics by Class:
-## 
-##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity            0.4970  0.50850  0.33040       NA  0.99149
-## Specificity            0.9468  0.85310  0.88225   0.8361  0.89008
-## Pos Pred Value         0.9104  0.33869  0.50468       NA  0.45218
-## Neg Pred Value         0.6339  0.92145  0.78395       NA  0.99913
-## Prevalence             0.5209  0.12889  0.26638   0.0000  0.08383
-## Detection Rate         0.2589  0.06554  0.08801   0.0000  0.08312
-## Detection Prevalence   0.2844  0.19351  0.17440   0.1639  0.18382
-## Balanced Accuracy      0.7219  0.68080  0.60633       NA  0.94079
-</code></pre>
-
-<pre><code class="r">#Accuracy of 49.56 % is not so good. 
+<pre><code class="r">#Accuracy of 50 % is not so good. We should be able to do better
 
 plot(modFit$finalModel, uniform=TRUE, main=&quot;Classification Tree&quot;)
 
@@ -516,7 +596,7 @@ text(modFit$finalModel, use.n=TRUE, all=TRUE, cex=.8)
 
 <h2>Random Forests</h2>
 
-<pre><code class="r"># Since 49% was not so great lets try to predict with random forests now and add cross validation with trcontrol and cv as the method
+<pre><code class="r"># Since 50% was not so great lets try to predict with random forests now (and also add cross validation with trcontrol and cv as the method)
 
 model &lt;- train(classe ~ .,method=&quot;rf&quot;,data=PML_train_clean,  trControl = trainControl(method = &quot;cv&quot;))
 
@@ -565,50 +645,26 @@ print(model$finalModel)
 ## The final value used for the model was mtry = 27.
 </code></pre>
 
-<pre><code class="r">confusionMatrix(PML_train_clean$classe, predict(model, PML_train_clean))
+<h2>Random Forest continued (looking at variable importance and accuracy )</h2>
+
+<p>Lets run randomForests again , but this time we will look at the importance of the variables, and how well the out of bag (aka out of sample error) was calculated. This should show us as the numbers are randomly permuted in the out of sample error estimation the overall mean decrease in the tree&#39;s accuracy is displayed (which shown in the figure below).    </p>
+
+<pre><code class="r">model.rf &lt;- randomForest(classe ~ ., data=PML_train_clean, importance=TRUE,proximity=TRUE)
+
+varImp &lt;- importance(model.rf)
+
+varImpPlot(model.rf, type=1)
 </code></pre>
 
-<pre><code>## Confusion Matrix and Statistics
-## 
-##           Reference
-## Prediction    A    B    C    D    E
-##          A 5580    0    0    0    0
-##          B    0 3797    0    0    0
-##          C    0    0 3422    0    0
-##          D    0    0    0 3216    0
-##          E    0    0    0    0 3607
-## 
-## Overall Statistics
-##                                      
-##                Accuracy : 1          
-##                  95% CI : (0.9998, 1)
-##     No Information Rate : 0.2844     
-##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16  
-##                                      
-##                   Kappa : 1          
-##  Mcnemar&#39;s Test P-Value : NA         
-## 
-## Statistics by Class:
-## 
-##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity            1.0000   1.0000   1.0000   1.0000   1.0000
-## Specificity            1.0000   1.0000   1.0000   1.0000   1.0000
-## Pos Pred Value         1.0000   1.0000   1.0000   1.0000   1.0000
-## Neg Pred Value         1.0000   1.0000   1.0000   1.0000   1.0000
-## Prevalence             0.2844   0.1935   0.1744   0.1639   0.1838
-## Detection Rate         0.2844   0.1935   0.1744   0.1639   0.1838
-## Detection Prevalence   0.2844   0.1935   0.1744   0.1639   0.1838
-## Balanced Accuracy      1.0000   1.0000   1.0000   1.0000   1.0000
-</code></pre>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAAt1BMVEX9/v0AAAAAADkAAGUAOWUAOY8AZo8AZrU5AAA5ADk5AGU5OWU5OY85Zo85ZrU5j485j9plAABlADllAGVlOQBlOTllOY9lZgBlZjllZmVlZrVlj49ltbVltf2POQCPOTmPOWWPZgCPZo+PjzmPj2WPtY+P27WP29qP2/21ZgC1Zjm1tWW124+1/rW1/tq1/v2+vr7ajznaj2XatWXa24/a/rXa/tra/v39tWX924/9/rX9/tr9/v3MuUP9AAAAPXRSTlP///////////////////////////////////////////////////////////////////////////////8ACS+sXwAAAAlwSFlzAAALEgAACxIB0t1+/AAAGeZJREFUeJztnQ172zaWhYdxU6ceb+rWnW6yXTvtbHbGziR1tNutLVv//3ct8UESpEjwgvcConTP+1T5sEAG9TEI4ujy4C87oJK/HLoD4DBAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVAeKVA+GSef3j9GPzl7CF4b/umenVXvksLgPDJxIS/r27Kd2gREH6Cp+rb2+rsYVNZKevfqqv695fbqvpPK7z5yk0n/Mvtq3eVJfipWDMQfoKnqqFW9t7+4dzq7rR1X7kKhK//+s1PEP7oeaoFr2fsm+cfXt1t39QTt/tDLfOm1nb7ptb35fbsIRD+fIdL/QnwVAtpVK2v4XdPVtRNdWP/YOZ4fz14dRdc6s1NHYQ/epzwrx8hvDJC4Scu9QYIf2qEwk/e3L1+NMI3M8IOwp8APeF7y7nv7XLu3v0AQHhwXEB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4pUB4paxP+ArIEP82r1D4Q3fgRIDwSoHwSoHwSoHwSoHwSoHwSoHwSsko/H0YArC9eKj/Y5ytAcLLAOH10LPreMLX2m4vH7dvqurm5bb+83d3u6c2we/+vQ93NBmA24sv9nc2EH4p1S787vGEf7qq/3v+8c4M6M2VSfzaba6aN+9fP5pBfl9//VxwxH/d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" alt="plot of chunk unnamed-chunk-6"/> </p>
 
-<h2>Results</h2>
+<h2>Results (cross validation, generalization/out of sample error)</h2>
 
-<p>Now that we concluded Random Forest is the right choice lets take our newly contrusted Machine Algorithm
-to predict activity quality from activity monitors with the test data. We can see from the confusion matrix above that our in sample accuracy with the training data is (0.995). We used 10 fold cross validation to predict the out of sample error.The final value used for the model was mtry of 2. </p>
+<p>We concluded Random Forest is the right choice to constructed our Machine Learning Algorithm
+to predict activity quality from the activity monitors with the test data. The accuracy in the regression trees was only 50% and jump up the 99.5% with Random Forests. Both models were built with a 10 fold cross validation. We expect our out of sample error (aka generalization error) to be .43% with Random Forests.</p>
 
 <pre><code class="r">#now lets generate our results off our model and the test data set.
 answers &lt;- predict(model,newdata=PML_testing)
-
 
 #lets take a look at our results
 summary(answers)

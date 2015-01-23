@@ -22,6 +22,7 @@ library(randomForest)
 library(RCurl)
 library(e1071)
 library(rattle)
+library(WGCNA)
 
 pml_write_files = function(x){
   n = length(x)
@@ -82,9 +83,7 @@ print(modFit$finalModel)
 
 print(modFit, digits =3)
 
-confusionMatrix(PML_train_clean$classe, predict(modFit, PML_train_clean))
-
-#Accuracy of 49.56 % is not so good. 
+#Accuracy of 50 % is not so good. We should be able to do better
 
 plot(modFit$finalModel, uniform=TRUE, main="Classification Tree")
 
@@ -93,26 +92,34 @@ text(modFit$finalModel, use.n=TRUE, all=TRUE, cex=.8)
 Random Forests
 --------------
 ```{r}
-# Since 49% was not so great lets try to predict with random forests now and add cross validation with trcontrol and cv as the method
+# Since 50% was not so great lets try to predict with random forests now (and also add cross validation with trcontrol and cv as the method)
 
 model <- train(classe ~ .,method="rf",data=PML_train_clean,  trControl = trainControl(method = "cv"))
 
 print(model$finalModel)
 
 print(model, digits =3)
+```
+Random Forest continued (looking at variable importance and accuracy )
+-----------------------------------------------------------------------
+Lets run randomForests again , but this time we will look at the importance of the variables, and how well the out of bag (aka out of sample error) was calculated. This should show us as the numbers are randomly permuted in the out of sample error estimation the overall mean decrease in the tree's accuracy is displayed (which shown in the figure below).    
 
-confusionMatrix(PML_train_clean$classe, predict(model, PML_train_clean))
+```{r}
+model.rf <- randomForest(classe ~ ., data=PML_train_clean, importance=TRUE,proximity=TRUE)
+
+varImp <- importance(model.rf)
+
+varImpPlot(model.rf, type=1)
 
 ```
-Results
+Results (cross validation, generalization/out of sample error)
 -------------------
-Now that we concluded Random Forest is the right choice lets take our newly contrusted Machine Algorithm
-to predict activity quality from activity monitors with the test data. We can see from the confusion matrix above that our in sample accuracy with the training data is (0.995). We used 10 fold cross validation to predict the out of sample error.The final value used for the model was mtry of 2. 
+We concluded Random Forest is the right choice to constructed our Machine Learning Algorithm
+to predict activity quality from the activity monitors with the test data. The accuracy in the regression trees was only 50% and jump up the 99.5% with Random Forests. Both models were built with a 10 fold cross validation. We expect our out of sample error (aka generalization error) to be .43% with Random Forests.
 
 ```{r}
 #now lets generate our results off our model and the test data set.
 answers <- predict(model,newdata=PML_testing)
-
 
 #lets take a look at our results
 summary(answers)
